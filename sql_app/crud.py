@@ -3,6 +3,7 @@ from database import Base
 from models import User, Dog
 import schemas
 import requests
+import datetime
 
 
 def get_user(db: Session, user_id: int):
@@ -26,7 +27,9 @@ def create_user(db: Session, user: schemas.User):
 
 
 def delete_users(db: Session, name: str):
-    return db.query(User).filter(User.name == name,).delete()
+    delete_user_dogs = db.query(User).filter(User.name == name).first()
+    db.delete(delete_user_dogs)
+    db.commit()
 
 
 def get_Dogs(db: Session, skip: int = 0, limit: int = 100):
@@ -34,11 +37,11 @@ def get_Dogs(db: Session, skip: int = 0, limit: int = 100):
 
 
 def get_dogs_by_name(db: Session, name: str):
-    return db.query(Dog).filter(Dog.name == name).first()
+    return db.query(Dog).filter(Dog.name == name).all()
 
 
 def get_dogs_is_adopted(db: Session):
-    return db.query(Dog).filter(Dog.is_adopted == True).all()
+    return db.query(Dog).filter(Dog.is_adopted == true).all()
 
 
 def create_user_Dogs(db: Session, dogs: schemas.Dogs_Base, id_user: int):
@@ -47,3 +50,19 @@ def create_user_Dogs(db: Session, dogs: schemas.Dogs_Base, id_user: int):
     db.commit()
     db.refresh(db_item)
     return db_item
+
+
+def delete_Dog(db: Session, name: str):
+    delete_Dogs = db.query(Dog).filter(Dog.name == name).first()
+    db.delete(delete_Dogs)
+    db.commit()
+
+
+def update_Dogs(db: Session, dogs: schemas.Dogs_Base, name: str):
+    db_item = Dog(**dogs.dict(), name=name)
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return db_item
+    db.refresh(Dogs)
+    return Dogs

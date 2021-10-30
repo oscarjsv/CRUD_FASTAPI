@@ -11,6 +11,8 @@ pymysql = "*"
 requests = "*"
 passlib = "*"
 pyjwt = "*"
+celery = {extras = ["redis"], version = "*"}
+redis = "*"
 
 [dev-packages]
 

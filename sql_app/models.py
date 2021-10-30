@@ -26,4 +26,3 @@ class Dog(Base):
     is_adopted = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     id_user = Column(Integer, ForeignKey('Users.id', ondelete='CASCADE'))
-

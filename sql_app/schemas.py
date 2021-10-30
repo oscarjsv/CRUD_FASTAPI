@@ -4,6 +4,7 @@ import requests
 from pydantic import BaseModel
 from datetime import datetime
 
+
 class AuthDetails(BaseModel):
     username: str
     password: str
@@ -11,15 +12,13 @@ class AuthDetails(BaseModel):
 
 class Dogs_Base(BaseModel):
     id: Optional[int]
-    name: str 
-    picture: str = (requests.get('https://dog.ceo/api/breeds/image/random').json())['message']
+    name: str
+    picture: str = (requests.get(
+        'https://dog.ceo/api/breeds/image/random').json())['message']
     is_adopted: Optional[bool] = False
     created_at: datetime
+
     
-    class Config:
-        orm_mode = True
-
-
 
 
 class User_Base(BaseModel):
@@ -30,7 +29,8 @@ class User_Base(BaseModel):
 
     class Config:
         orm_mode = True
-        
+
+
 class User(User_Base):
     id: Optional[int]
 
