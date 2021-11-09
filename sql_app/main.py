@@ -1,6 +1,4 @@
 from typing import List
-
-from sqlalchemy.orm import Session
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from auth import AuthHandler
@@ -68,9 +66,9 @@ def create_user(user: schemas.User_Base, db: Session = Depends(get_db),
     return crud.create_user(db=db, user=user)
 
 
-@app.put('/api/dogs/{name}', response_model=schemas.User_Base)
+"""@app.put('/api/dogs/{name}', response_model=schemas.User_Base)
 def update_user(name: str, db: Session = Depends(get_db)):
-    pass
+    pass"""
 
 
 @app.get("/api/users", response_model=List[schemas.User_Base])
@@ -118,8 +116,8 @@ def get_dogs_names(name: str, db: Session = Depends(get_db)):
     return db_dogs
 
 
-@app.get('/api/dogs/is_adopted', response_model=List[schemas.Dogs_Base])
-def dogs_is_adopted(db: Session = Depends(get_db), ):
+@app.get('/api/dogs/is_adopted', response_model=schemas.Dogs_Base)
+def dogs_is_adopted(db: Session = Depends(get_db)):
     return crud.get_dogs_is_adopted(db)
 
 
@@ -128,9 +126,6 @@ def delete_users_dogs(name: str, db: Session = Depends(get_db)):
     return crud.delete_Dog(db, name=name)
 
 
-@app.put("/api/dogs/{name}", response_model=schemas.Dogs_Base)
+@app.put("/api/dogs/{name}")
 def update_dog(name: str, dogs: schemas.Dogs_Base, db: Session = Depends(get_db)):
-    """update and return TODO for given id"""
-    dogs = crud.update_Dogs(db, name)
-    updated_dogss = crud.update_Dogs(db, name=name,  dogs=dogs)
-    return updated_dogss
+    return crud.update_Dogs(name=name, db=db, dog=dogs)

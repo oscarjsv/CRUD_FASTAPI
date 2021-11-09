@@ -1,9 +1,7 @@
 from sqlalchemy.orm import Session
-from database import Base
+#from database import Base
 from models import User, Dog
 import schemas
-import requests
-import datetime
 
 
 def get_user(db: Session, user_id: int):
@@ -58,11 +56,8 @@ def delete_Dog(db: Session, name: str):
     db.commit()
 
 
-def update_Dogs(db: Session, dogs: schemas.Dogs_Base, name: str):
-    db_item = Dog(**dogs.dict(), name=name)
-    db.add(db_item)
+def update_Dogs(name: str, db: Session, dog: schemas.Dogs_Base):
+    data = dog.dict(exclude_unset=True)
+    db.query(Dog).filter(Dog.name == name).update(data)
     db.commit()
-    db.refresh(db_item)
-    return db_item
-    db.refresh(Dogs)
-    return Dogs
+    
